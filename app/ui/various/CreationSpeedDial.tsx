@@ -9,16 +9,17 @@ import { useRouter } from "next/navigation";
 export default function CreationSpeedDial(){
   const router = useRouter()
   const items = [
-    {icon: <PersonAddIcon/>, name: "Create Artist", link: "/dashboard/artists/create"},
-    {icon: <CollectionsBookmarkIcon/>, name: "Create Genre", link: "/dashboard/genres/create"},
-    {icon: <AlbumIcon/>, name: "Create Album", link: "/dashboard/albums/create"},
-    {icon: <LibraryMusicIcon/>, name: "Create Song", link: "/dashboard/songs/create"}
+    {icon: <PersonAddIcon/>, name: "Create Artist", link: "/dashboard/create/artists"},
+    {icon: <CollectionsBookmarkIcon/>, name: "Create Genre", link: "/dashboard/create/genres"},
+    {icon: <AlbumIcon/>, name: "Create Album", link: "/dashboard/create/albums"},
+    {icon: <LibraryMusicIcon/>, name: "Create Song", link: "/dashboard/create/songs"}
   ]
 
 
   return (
     <Box sx={{ position: 'absolute', bottom: 20, right: 20, zIndex: 1000 }}>
        <SpeedDial
+       
         ariaLabel="Item creation speed dial" direction="up"
         icon={<SpeedDialIcon/>}
         color="secondary"
@@ -26,6 +27,7 @@ export default function CreationSpeedDial(){
           {items.map((item, index)=>{
           return (
             <SpeedDialAction
+              title={item.name}
               key={index}
               icon={item.icon}
               tooltipTitle={item.name}

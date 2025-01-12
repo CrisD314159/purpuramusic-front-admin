@@ -1,13 +1,15 @@
 import { cookies } from "next/headers";
 import { apiURL } from "./definitions";
-import { createSession } from "./session";
-import { logout } from "../actions/auth";
+import { createSession} from "./session";
 
 
 export async function checkIsloggedIn() {
   try {
     const token = (await cookies()).get('token')?.value
-  if(!token) return false
+    const refresh = (await cookies()).get('refresh')?.value
+    if(!token && refresh){
+      return await refreshToken()
+    }
   const response = await fetch(`${apiURL}/login/checkToken`, {
     method: 'PUT',
     headers: {
@@ -24,9 +26,7 @@ export async function checkIsloggedIn() {
 
   return true
   } catch {
-    logout()
-    throw new Error("An error occurred while trying to login you in. Please try again later.")
-     
+    return false
   }
 
 }

@@ -7,8 +7,9 @@
 }
 
 :root {
-  background: #060606;
+  background: #010101;
   color: #ededed;
+  font-family: 'Lato', sans-serif;
   
 }
 body {
@@ -148,10 +149,5 @@ body {
 
 
 /* this is the glow effect for the header component */
-.glow{
-  border-bottom: .7px solid #b30def90;
-
-  transition: box-shadow 0.3s;
-}
 
 

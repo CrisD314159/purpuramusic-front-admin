@@ -1,0 +1,46 @@
+.pantone-card {
+  display: grid;
+  width: 300px;
+  border-radius: 10px;
+  margin: 40px;
+ 
+}
+
+[type="color"] {
+  display: inline-flex;
+  vertical-align: bottom;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  height: 250px;
+  width: 100%;
+  cursor: pointer;
+  
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  
+  &::-webkit-color-swatch {
+    border: 0;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  &::-moz-color-swatch {
+    border: 0;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  + output {
+    display: block;
+    font-size: 28px;
+    padding: 16px;
+    line-height: 1em;
+    
+    &:before {
+      content: 'HEXADECIMAL';
+      font-size: 14px;
+      font-weight: bold;
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,5 @@
+.mainArtist{
+  @media screen and (max-width: 620px) {
+    flex-direction: column;
+  }
+}

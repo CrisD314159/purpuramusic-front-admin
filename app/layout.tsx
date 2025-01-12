@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Mulish } from "next/font/google";
+import {  Raleway } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import theme  from "./theme/theme";
 
-const mulish = Mulish({
-  variable: "--font-mulish",
+const raleway = Raleway({
+  style:[ "normal", "italic"],
   subsets: ["latin"],
-  weight: ["200", "300"]
+  weight: ["100","200", "300", "400", "500"],
 })
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${mulish.variable}`}
+        className={`${raleway.className} min-h-screen`}
       >
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>

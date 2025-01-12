@@ -2,7 +2,7 @@
 import {IconButton } from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
 import Image from "next/image";
-import { logout } from "../actions/auth";
+import { logout } from "@/app/actions/auth";
 import Link from "next/link";
 
 export default function HeaderComponent(){

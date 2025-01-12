@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { checkIsloggedIn } from './app/lib/authChecks'
  
 // 1. Specify protected and public routes
-const protectedRoutes = ['/dashboard', '/dashboard/albums', '/dashboard/artists', '/dashboard/songs', '/dashboard/genres']
+const protectedRoutes = ['/dashboard', '/dashboard/create/albums', '/dashboard/create/artists', '/dashboard/create/songs', '/dashboard/create/genres']
 const publicRoutes = ['/login', '/signup', '/']
  
 export default async function middleware(req: NextRequest) {

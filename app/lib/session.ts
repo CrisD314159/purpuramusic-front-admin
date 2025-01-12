@@ -1,6 +1,6 @@
 import 'server-only'
 import { cookies } from 'next/headers'
-import { SessionError } from '../exceptions/SessionError'
+import SessionError from '../dashboard/exceptions/SessionError'
 
 export async function createSession(token: string, refreshToken: string) {
  try {
@@ -24,7 +24,6 @@ export async function createSession(token: string, refreshToken: string) {
   if (error instanceof Error) {
     throw new SessionError("An error occurred while trying to login you in. Please try again later.")
   }
-  
  }
 }
  

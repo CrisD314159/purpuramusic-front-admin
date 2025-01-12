@@ -1,6 +1,6 @@
 'use client'
 import { Alert, Button, TextField } from "@mui/material";
-import login from "../actions/auth";
+import login from "@/app/actions/auth";
 import Image from "next/image";
 import { useActionState } from "react";
 

@@ -1,7 +1,8 @@
 'use server'
 import { redirect } from "next/navigation";
-import { ApiLoginResponse, apiURL, FormState, LoginFormSchema } from "../lib/definitions";
+import { ApiLoginResponse, FormState, LoginFormSchema } from "../lib/definitions";
 import { createSession, deleteSession } from "../lib/session";
+import { LoginFetch } from "./postApiRequests";
 
 
 
@@ -19,15 +20,9 @@ export default async function login(state:FormState, formdata: FormData){
 
   const {email, password} = formValidation.data
 
-  const response = await fetch(`${apiURL}/login/admin`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({email, password})
-  })
+  const response = await LoginFetch(email, password)
 
-  const {success, message, token, refreshToken} : ApiLoginResponse = await response.json()
+  const {success, message, token, refreshToken} : ApiLoginResponse = response
 
   if(!success){
     return {
