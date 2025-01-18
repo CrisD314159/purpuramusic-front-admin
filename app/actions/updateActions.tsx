@@ -1,10 +1,12 @@
 'use server'
-import { ApiGeneralResponse, CreateAlbumSchema, CreateArtistSchema, CreateGenreSchema, CreateSongSchema, FormState } from "../lib/definitions";
-import { separateArray } from "../lib/various";
-import { CreateAlbumRequest, CreateArtistRequest, CreateGenreRequest, CreateSongRequest } from "./postApiRequests";
 
-export async function CreateArtist(state:FormState, formdata: FormData){
-  const formValidation = CreateArtistSchema.safeParse({
+import { ApiGeneralResponse, FormState, UpdateAlbumSchema, UpdateArtistSchema, UpdateGenreSchema, UpdateSongSchema } from "../lib/definitions"
+import { separateArray } from "../lib/various"
+import { UpdateAlbumRequest, UpdateArtistRequest, UpdateGenreRequest, UpdateSongRequest } from "./putApiRequests"
+
+export async function UpdateArtist(state:FormState, formdata: FormData){
+  const formValidation = UpdateArtistSchema.safeParse({
+    id: formdata.get('id'),
     imageUrl: formdata.get('imageUrl'),
     name: formdata.get('name'),
     description: formdata.get('description')
@@ -17,9 +19,9 @@ export async function CreateArtist(state:FormState, formdata: FormData){
     }
   }
 
-  const {imageUrl, name, description} = formValidation.data
+  const {id, imageUrl, name, description} = formValidation.data
 
-  const response: ApiGeneralResponse | undefined = await CreateArtistRequest(imageUrl, name, description)
+  const response: ApiGeneralResponse | undefined = await UpdateArtistRequest(id, imageUrl, name, description)
 
   return {
     success: response?.success,
@@ -27,8 +29,9 @@ export async function CreateArtist(state:FormState, formdata: FormData){
   }  
 }
 
-export async function CreateGenre(state:FormState, formdata: FormData){
-  const formValidation = CreateGenreSchema.safeParse({
+export async function UpdateGenre(state:FormState, formdata: FormData){
+  const formValidation = UpdateGenreSchema.safeParse({
+    id: formdata.get('id'),
     color: formdata.get('color'),
     name: formdata.get('name'),
     description: formdata.get('description')
@@ -41,9 +44,9 @@ export async function CreateGenre(state:FormState, formdata: FormData){
     }
   }
 
-  const {color, name, description} = formValidation.data
+  const {id, color, name, description} = formValidation.data
 
-  const response: ApiGeneralResponse | undefined = await CreateGenreRequest(color, name, description)
+  const response: ApiGeneralResponse | undefined = await UpdateGenreRequest(id, color, name, description)
   console.log(response);
 
   return {
@@ -52,14 +55,15 @@ export async function CreateGenre(state:FormState, formdata: FormData){
   }  
 
 }
-export async function CreateSong(state:FormState, formdata: FormData){
+export async function UpdateSong(state:FormState, formdata: FormData){
 
   const genresSplited = separateArray(formdata.getAll('genres')[0].toString())
   const artistsSplited = separateArray(formdata.getAll('artists')[0].toString())
 
   console.log(genresSplited, artistsSplited);
   
-  const formValidation = CreateSongSchema.safeParse({
+  const formValidation = UpdateSongSchema.safeParse({
+    id: formdata.get('id') as string,
     name: formdata.get('name') as string,
     imageUrl: formdata.get('imageUrl') as string,
     audioUrl: formdata.get('audioUrl') as string,
@@ -80,10 +84,10 @@ export async function CreateSong(state:FormState, formdata: FormData){
     }
   }
 
-  const {name, imageUrl, audioUrl, duration, releaseDate, genres, artists} = formValidation.data
+  const {id, name, imageUrl, audioUrl, duration, releaseDate, genres, artists} = formValidation.data
 
-  const response: ApiGeneralResponse | undefined = await CreateSongRequest
-  (name, lyrics, imageUrl, audioUrl, duration, producerName, writerName, recordLabel, releaseDate, genres, artists)
+  const response: ApiGeneralResponse | undefined = await UpdateSongRequest
+  (id, name, lyrics, imageUrl, audioUrl, duration, producerName, writerName, recordLabel, releaseDate, genres, artists)
 
   console.log(response);
 
@@ -94,9 +98,10 @@ export async function CreateSong(state:FormState, formdata: FormData){
 }
 
 
-export async function CreateAlbum(state:FormState, formdata: FormData){
+export async function UpdateAlbum(state:FormState, formdata: FormData){
   console.log(formdata.get('releaseDate'));
-  const formValidation = CreateAlbumSchema.safeParse({
+  const formValidation = UpdateAlbumSchema.safeParse({
+    id: formdata.get('id'),
     name: formdata.get('name'),
     imageUrl: formdata.get('imageUrl'),
     description: formdata.get('description'),
@@ -116,10 +121,10 @@ export async function CreateAlbum(state:FormState, formdata: FormData){
     }
   }
 
-  const {name, artistId, imageUrl, genreId, releaseDate, description} = formValidation.data
+  const {id, name, artistId, imageUrl, genreId, releaseDate, description} = formValidation.data
 
-  const response: ApiGeneralResponse | undefined = await CreateAlbumRequest
-  (name, artistId, imageUrl, genreId, producerName, writerName , recordLabel, releaseDate, description)
+  const response: ApiGeneralResponse | undefined = await UpdateAlbumRequest
+  (id, name, artistId, imageUrl, genreId, producerName, writerName , recordLabel, releaseDate, description)
 
   return {
     success: response?.success,

@@ -1,42 +1,20 @@
+'use server'
 import { cookies } from "next/headers"
-import {  ApiGeneralResponse, apiURL } from "../lib/definitions"
+import { ApiGeneralResponse, apiURL } from "../lib/definitions"
 import { logout } from "./auth"
 
-export async function LoginFetch(email:string, password:string){
-  try {
-    const response = await fetch(`${apiURL}/login/admin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email, password})
-    })
-  
-    const data = await response.json()
-    return data
-  } catch {
-    return {
-      success: false,
-      message: 'An error occured while trying to login'
-    }
-  }
-
-
-}
-
-
-export async function CreateArtistRequest(imageUrl:string, name:string, description:string){
+export async function UpdateArtistRequest(id:string, imageUrl:string, name:string, description:string){
   try {
     const token = (await cookies()).get('token')?.value
     if(!token) await logout()
-    const response = await fetch(`${apiURL}/createArtist`,
+    const response = await fetch(`${apiURL}/updateArtist`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers:{
           "Authorization": `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({imageUrl, name, description})
+        body: JSON.stringify({id, imageUrl, name, description})
       }
     )
     const data : ApiGeneralResponse = await response.json()
@@ -52,18 +30,19 @@ export async function CreateArtistRequest(imageUrl:string, name:string, descript
   }
   
 }
-export async function CreateGenreRequest(color:string, name:string, description:string){
+
+export async function UpdateGenreRequest(id:string, color:string, name:string, description:string){
   try {
     const token = (await cookies()).get('token')?.value
     if(!token) logout()
-    const response = await fetch(`${apiURL}/createGenre`,
+    const response = await fetch(`${apiURL}/updateGenre`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers:{
           "Authorization": `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({color, name, description})
+        body: JSON.stringify({id, color, name, description})
       }
     )
     const data : ApiGeneralResponse = await response.json()
@@ -79,13 +58,14 @@ export async function CreateGenreRequest(color:string, name:string, description:
   }
   
 }
-export async function CreateSongRequest(
-  name:string, lyrics:string | undefined, imageUrl:string, audioUrl:string, duration:string, 
+export async function UpdateSongRequest(
+  id:string, name:string, lyrics:string | undefined, imageUrl:string, audioUrl:string, duration:string, 
   producerName:string |undefined, writerName:string | undefined, recordLabel:string |undefined, releaseDate:string, 
    genres:string[], artists:string[]
 ){
 
   const requestBody = {
+    id,
     name,
     imageUrl,
     audioUrl,
@@ -101,9 +81,9 @@ export async function CreateSongRequest(
   try {
     const token = (await cookies()).get('token')?.value
     if(!token)await logout()
-    const response = await fetch(`${apiURL}/createSongSingle`,
+    const response = await fetch(`${apiURL}/updateSong`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers:{
           "Authorization": `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -125,14 +105,15 @@ export async function CreateSongRequest(
   
 }
 
-export async function CreateAlbumRequest(
-  name:string, artistId:string, imageUrl:string, genreId:string, 
+export async function UpdateAlbumRequest(
+  id:string, name:string, artistId:string, imageUrl:string, genreId:string, 
   producerName:string | undefined, writerName:string | undefined, recordLabel:string | undefined, releaseDate:string, 
   description:string
 ){
 
 
   const requestBody ={
+    id,
     name,
     artistId,
     imageUrl,

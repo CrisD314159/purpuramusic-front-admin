@@ -1,6 +1,6 @@
 import 'server-only'
 import { cookies } from 'next/headers'
-import SessionError from '../dashboard/exceptions/SessionError'
+import SessionError from './exceptions/SessionError'
 
 export async function createSession(token: string, refreshToken: string) {
  try {

@@ -3,16 +3,17 @@ import { Alert, Button, Grow, IconButton, Snackbar } from "@mui/material"
 import { ChangeEvent, useEffect, useState } from "react"
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ImageIcon from '@mui/icons-material/Image';
-import ImageUpload, {ImageUploadResponse} from "@/app/actions/imageupload";
+import {ImageUpload, UploadResponse} from "@/app/actions/fileUpload";
 import Image from "next/image";
 
 interface ImageUploadProps {
   success:boolean | undefined,
   setImageUrl: (url:string) => void
+  initialUrl?:string | null
 }
 
 export default function ImageUploading({props}:{props:ImageUploadProps}){
-  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(null)
+  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(props.initialUrl ?? null)
   const [imageReady, setImageReady] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [snackbar, setSnackbar] = useState(false)
@@ -33,7 +34,7 @@ export default function ImageUploading({props}:{props:ImageUploadProps}){
       if (!e.target.files) return;
   
       const file = e.target.files[0];
-      if (file.type.split('/')[0] !== 'image' || file.size > 5000000) throw new Error("Image must be a valid image file and less than 5MB");
+      if (file.type.split('/')[0] !== 'image' || file.size > 4300000) throw new Error("Image must be a valid image file and less than 5MB");
       const reader = new FileReader();
       reader.onloadend = () => {
         const img = new window.Image();
@@ -71,7 +72,7 @@ export default function ImageUploading({props}:{props:ImageUploadProps}){
     try {
       if(!imageReady) return
       setLoading(true)
-      const response : ImageUploadResponse | undefined = await ImageUpload(imageReady)
+      const response : UploadResponse | undefined = await ImageUpload(imageReady)
       if(response?.success && response){
         setLoading(false)
         props.setImageUrl(response.url)
@@ -93,7 +94,7 @@ export default function ImageUploading({props}:{props:ImageUploadProps}){
     <div className="flex flex-col items-center justify-center w-full">
       
       <div className="flex flex-col items-center justify-center w-80 h-80 rounded-lg overflow-hidden bg-neutral-900" style={{boxShadow: '0 0 30px #9607f5', border: '0.5px solid #9607f5'}}>
-        {typeof previewImage === 'string' && !props.success && <Image src={previewImage} alt="Uploaded preview" height={300} width={300}/>}
+        {typeof previewImage === 'string' && !props.success && <Image src={previewImage} alt="Uploaded preview" height={300} width={300} unoptimized/>}
         {typeof previewImage !== 'string' && <IconButton size="large" disabled><ImageIcon sx={{width:"100px", height:"100px"}} /></IconButton>}
       </div>
       <label form="dropzone-file" className="flex flex-col items-center justify-center w-32 h-10 rounded-lg cursor-pointer hover:bg-purple-900 border my-5" style={{borderColor: '#9607f5'}}>
@@ -103,7 +104,7 @@ export default function ImageUploading({props}:{props:ImageUploadProps}){
         }} />
       </label>
 
-      {upload && <Button onClick={handleUpload} variant="contained" disabled={loading} color="info">Upload Image</Button>}
+      {upload && <Button onClick={handleUpload} variant="contained" disabled={loading} color="primary">Upload Image</Button>}
 
       <Snackbar open={snackbar} TransitionComponent={Grow} autoHideDuration={3000} anchorOrigin={{vertical:'top', horizontal:'center'}} onClose={()=>setSnackbar(false)} message="Image uploaded successfully">
         <Alert
