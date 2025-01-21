@@ -1,12 +1,11 @@
 'use server'
 import { cookies } from "next/headers"
 import { ApiGeneralResponse, apiURL } from "../lib/definitions"
-import { logout } from "./auth"
+
 
 export async function UpdateArtistRequest(id:string, imageUrl:string, name:string, description:string){
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token) await logout()
     const response = await fetch(`${apiURL}/updateArtist`,
       {
         method: 'PUT',
@@ -34,7 +33,6 @@ export async function UpdateArtistRequest(id:string, imageUrl:string, name:strin
 export async function UpdateGenreRequest(id:string, color:string, name:string, description:string){
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token) logout()
     const response = await fetch(`${apiURL}/updateGenre`,
       {
         method: 'PUT',
@@ -61,7 +59,7 @@ export async function UpdateGenreRequest(id:string, color:string, name:string, d
 export async function UpdateSongRequest(
   id:string, name:string, lyrics:string | undefined, imageUrl:string, audioUrl:string, duration:string, 
   producerName:string |undefined, writerName:string | undefined, recordLabel:string |undefined, releaseDate:string, 
-   genres:string[], artists:string[]
+   genres:string[], artists:string[], albumId:string
 ){
 
   const requestBody = {
@@ -76,11 +74,11 @@ export async function UpdateSongRequest(
     producerName,
     writerName,
     recordLabel,
-    lyrics
+    lyrics,
+    albumId
   };
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token)await logout()
     const response = await fetch(`${apiURL}/updateSong`,
       {
         method: 'PUT',
@@ -126,10 +124,9 @@ export async function UpdateAlbumRequest(
   }
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token) await logout()
-    const response = await fetch(`${apiURL}/createAlbum`,
+    const response = await fetch(`${apiURL}/updateAlbum`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers:{
           "Authorization": `Bearer ${token}`,
           'Content-Type': 'application/json'

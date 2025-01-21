@@ -5,6 +5,7 @@ import AlbumList from "./AlbumList"
 import { Alert, CircularProgress, Snackbar } from '@mui/material'
 import { useState } from 'react'
 import useSWR from 'swr'
+import { Song } from '../SongListComponent/SongListComponent'
 
 export interface Album{
   id:string,
@@ -16,9 +17,10 @@ export interface Album{
     genreId:string,
     genreName:string,
     releaseDate:string,
-    producerName:string
-    writerName:string
+    producer:string
+    writer:string
     recordLabel:string
+    songs: Song[]
 }
 
 

@@ -19,11 +19,6 @@ interface GenreProps{
 export default function GenreSelectMenu({props}:{props:GenreProps}){
   const {data, error, isLoading} = useSWR(`${apiURL}/getMinGenres`, getMinGenres) // swr hook to fetch data from the api, syntaxis (url, fetcher function, options)
 
-  // const debounce = useDebouncedCallback((input:string)=>{
-  //   setInput(input)
-  //   mutate()
-  //   console.log(data);
-  // }, 400)
 
   const handleChange = (event: SelectChangeEvent<typeof props.genre>) => {
     const {
@@ -39,7 +34,7 @@ export default function GenreSelectMenu({props}:{props:GenreProps}){
   const genres = data?.data ?? [{Id:"0", Name:"No genres found"}] // if data is not loaded, set genres to an empty array
 
   return(
-    <FormControl sx={{width:"70%"}}>
+    <FormControl sx={{width:"100%", margin:'20px 0px'}}>
       <InputLabel id="artistInputLabel">Genre</InputLabel>
       <Select labelId="artistInputLabel" value={props.genre} label="Artist" variant="outlined" multiple={props.multiple}
       onChange={handleChange}

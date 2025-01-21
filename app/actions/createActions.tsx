@@ -1,7 +1,7 @@
 'use server'
-import { ApiGeneralResponse, CreateAlbumSchema, CreateArtistSchema, CreateGenreSchema, CreateSongSchema, FormState } from "../lib/definitions";
+import { AddSongToAlbumSchema, ApiGeneralResponse, CreateAlbumSchema, CreateArtistSchema, CreateGenreSchema, CreateSongSchema, FormState } from "../lib/definitions";
 import { separateArray } from "../lib/various";
-import { CreateAlbumRequest, CreateArtistRequest, CreateGenreRequest, CreateSongRequest } from "./postApiRequests";
+import { AddSongToAlbumRequest, CreateAlbumRequest, CreateArtistRequest, CreateGenreRequest, CreateSongRequest } from "./postApiRequests";
 
 export async function CreateArtist(state:FormState, formdata: FormData){
   const formValidation = CreateArtistSchema.safeParse({
@@ -84,6 +84,41 @@ export async function CreateSong(state:FormState, formdata: FormData){
 
   const response: ApiGeneralResponse | undefined = await CreateSongRequest
   (name, lyrics, imageUrl, audioUrl, duration, producerName, writerName, recordLabel, releaseDate, genres, artists)
+
+  console.log(response);
+
+  return {
+    success: response?.success,
+    message: response?.message
+  }  
+}
+
+export async function AddSongToAlbum(state:FormState, formdata: FormData){
+
+  const genresSplited = separateArray(formdata.getAll('genres')[0].toString())
+  const artistsSplited = separateArray(formdata.getAll('artists')[0].toString())
+  
+  const formValidation = AddSongToAlbumSchema.safeParse({
+    name: formdata.get('name') as string,
+    albumId: formdata.get('albumId') as string,
+    audioUrl: formdata.get('audioUrl') as string,
+    duration: formdata.get('duration') as string,
+    genres: genresSplited,
+    artists: artistsSplited
+  })
+
+  const lyrics = formdata.get('lyrics')?.toString() === ''? "Not Provided" : formdata.get('lyrics')?.toString()
+  if(!formValidation.success){
+    return {
+      success: false,
+      message: "Check the fields and try again",
+    }
+  }
+
+  const {name, audioUrl, duration, genres, artists, albumId} = formValidation.data
+
+  const response: ApiGeneralResponse | undefined = await AddSongToAlbumRequest
+  (name, albumId, lyrics, audioUrl, duration, genres, artists)
 
   console.log(response);
 

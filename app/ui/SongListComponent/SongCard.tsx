@@ -4,6 +4,7 @@ import { Button } from "@mui/material"
 import Image from "next/image"
 import { Song } from "./SongListComponent"
 import DeleteDialog from "../Dialogs/DeleteDialog"
+import Link from "next/link"
 
 interface SongCardProps {
   song:Song
@@ -33,7 +34,9 @@ export default function SongCard({props}:{props:SongCardProps}){
         )
        }): <p>Loading</p>}
         <div className="flex mt-8 justify-evenly">
-          <Button variant="outlined" color="primary">Edit Song</Button>
+          <Link href={`/dashboard/edit/songs/${song.id}`}>
+            <Button variant="outlined" color="primary">Edit Song</Button>
+          </Link>
           <DeleteDialog props={{buttonText:"Delete Song", deleteMethod:props.deleteSong, 
                                        itemId:song.id, title:"Are you sure you want to delete this song?", isDeleting:props.isDeleting}}/>
         </div>

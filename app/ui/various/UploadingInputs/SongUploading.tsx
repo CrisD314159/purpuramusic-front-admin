@@ -8,10 +8,11 @@ import {SongUpload, UploadResponse} from "@/app/actions/fileUpload";
 interface SongUploadProps {
   success:boolean | undefined,
   setSongUrl: (url:string) => void
+  initialName?:string | null
 }
 
 export default function SongUploading({props}:{props:SongUploadProps}){
-  const [songNamePreview, setSongNamePreview] = useState<string | null>("")
+  const [songNamePreview, setSongNamePreview] = useState<string | null>( props.initialName ?? "")
   const [songReady, setSongReady] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [snackbar, setSnackbar] = useState(false)

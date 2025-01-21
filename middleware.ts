@@ -2,13 +2,25 @@ import { NextRequest, NextResponse } from 'next/server'
 import { checkIsloggedIn } from './app/lib/authChecks'
  
 // 1. Specify protected and public routes
-const protectedRoutes = ['/dashboard', '/dashboard/create/albums', '/dashboard/create/artists', '/dashboard/create/songs', '/dashboard/create/genres']
+const protectedRoutesRegex = [
+  /^\/dashboard$/, 
+  /^\/dashboard\/create\/albums$/,
+  /^\/dashboard\/create\/artists$/,
+  /^\/dashboard\/create\/songs$/,
+  /^\/dashboard\/create\/genres$/,
+  /^\/dashboard\/edit\/albums\/.*/,
+  /^\/dashboard\/edit\/artists\/.*/,
+  /^\/dashboard\/edit\/songs\/.*/,
+  /^\/dashboard\/edit\/genres\/.*/
+];
+
 const publicRoutes = ['/login', '/signup', '/']
  
 export default async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected or public
   const path = req.nextUrl.pathname
-  const isProtectedRoute = protectedRoutes.includes(path)
+  //const isProtectedRoute = protectedRoutes.includes(path)
+  const isProtectedRoute = protectedRoutesRegex.some((regex) => regex.test(path));
   const isPublicRoute = publicRoutes.includes(path)
  
   // 3. Decrypt the session from the cookie 

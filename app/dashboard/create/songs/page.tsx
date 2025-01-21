@@ -7,7 +7,7 @@ export default function SongsPage(){
             <h1 className="font-light text-3xl">Create Single Song</h1>
           </div>
         <div className="flex flex-col items-center p-5 w-full"  style={{maxHeight:"calc(100vh - 154px)", overflowY:"auto"}}>
-            <SongCreationForm/>
+            <SongCreationForm props={{ edit:false}}/>
           </div>
         </div>
   )

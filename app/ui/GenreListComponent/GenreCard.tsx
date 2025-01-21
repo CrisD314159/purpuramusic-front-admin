@@ -2,6 +2,7 @@
 import { Button } from "@mui/material";
 import { Genre } from "./GenreListComponent";
 import DeleteDialog from "../Dialogs/DeleteDialog";
+import Link from "next/link";
 interface GenreCardProps {
   genre: Genre
   deleteGenre:(id:string)=>void
@@ -17,7 +18,9 @@ export default function GenreCard({props}:{props:GenreCardProps}){
                 <h3 className="mb-3 text-xl font-bold" style={{color:`${genre.color}`}}>{genre.name}</h3>
                 <p className="font-extralight">{genre.description}</p>
                 <div className="flex mt-8 justify-evenly">
-                  <Button variant="outlined" color="primary">Edit Genre</Button>
+                  <Link href={`/dashboard/edit/genres/${genre.id}`}>
+                    <Button variant="outlined" color="primary">Edit Genre</Button>
+                  </Link>
                  <DeleteDialog props={{buttonText:"Delete Genre", deleteMethod:props.deleteGenre, 
                              itemId:genre.id, title:"Are you sure you want to delete this genre?", isDeleting:props.isDeleting}}/>
                 </div>

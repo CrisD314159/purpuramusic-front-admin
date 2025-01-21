@@ -70,7 +70,8 @@ export async function UpdateSong(state:FormState, formdata: FormData){
     duration: formdata.get('duration') as string,
     genres: genresSplited,
     releaseDate: formdata.get('releaseDate') as string,
-    artists: artistsSplited
+    artists: artistsSplited,
+    albumId: formdata.get('albumId') as string
   })
 
   const writerName = formdata.get('writerName')?.toString() === ''? "Not Provided" : formdata.get('writerName')?.toString()
@@ -84,10 +85,10 @@ export async function UpdateSong(state:FormState, formdata: FormData){
     }
   }
 
-  const {id, name, imageUrl, audioUrl, duration, releaseDate, genres, artists} = formValidation.data
+  const {id, name, imageUrl, audioUrl, duration, releaseDate, genres, artists, albumId} = formValidation.data
 
   const response: ApiGeneralResponse | undefined = await UpdateSongRequest
-  (id, name, lyrics, imageUrl, audioUrl, duration, producerName, writerName, recordLabel, releaseDate, genres, artists)
+  (id, name, lyrics, imageUrl, audioUrl, duration, producerName, writerName, recordLabel, releaseDate, genres, artists, albumId)
 
   console.log(response);
 

@@ -14,7 +14,13 @@ export interface Song{
   albumName:string,
   imageUrl:string,
   audioUrl:string,
+  duration:number,
+  releaseDate:string,
   genres:{id:string, name:string}[],
+  producerName:string,
+  writerName:string,
+  recordLabel:string,
+  lyrics:string
 }
 
 export default function AlbumListComponent(){

@@ -1,6 +1,5 @@
 import { cookies } from "next/headers"
 import {  ApiGeneralResponse, apiURL } from "../lib/definitions"
-import { logout } from "./auth"
 
 export async function LoginFetch(email:string, password:string){
   try {
@@ -28,7 +27,7 @@ export async function LoginFetch(email:string, password:string){
 export async function CreateArtistRequest(imageUrl:string, name:string, description:string){
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token) await logout()
+    
     const response = await fetch(`${apiURL}/createArtist`,
       {
         method: 'POST',
@@ -55,7 +54,6 @@ export async function CreateArtistRequest(imageUrl:string, name:string, descript
 export async function CreateGenreRequest(color:string, name:string, description:string){
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token) logout()
     const response = await fetch(`${apiURL}/createGenre`,
       {
         method: 'POST',
@@ -100,8 +98,45 @@ export async function CreateSongRequest(
   };
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token)await logout()
     const response = await fetch(`${apiURL}/createSongSingle`,
+      {
+        method: 'POST',
+        headers:{
+          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      }
+    )
+    const data : ApiGeneralResponse = await response.json()
+    return data
+    
+
+  } catch {
+    return {
+      success: false,
+      message: 'An error occured while trying to create artist'
+    }
+    
+  }
+  
+}
+export async function AddSongToAlbumRequest(
+  name:string, albumId:string, lyrics:string | undefined, audioUrl:string, duration:string, genres:string[], artists:string[]
+){
+
+  const requestBody = {
+    name,
+    audioUrl,
+    duration,
+    albumId,
+    genres,
+    artists,
+    lyrics
+  };
+  try {
+    const token = (await cookies()).get('token')?.value
+    const response = await fetch(`${apiURL}/addSongToAlbum`,
       {
         method: 'POST',
         headers:{
@@ -145,7 +180,7 @@ export async function CreateAlbumRequest(
   }
   try {
     const token = (await cookies()).get('token')?.value
-    if(!token) await logout()
+    
     const response = await fetch(`${apiURL}/createAlbum`,
       {
         method: 'POST',

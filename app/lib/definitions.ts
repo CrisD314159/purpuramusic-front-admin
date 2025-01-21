@@ -38,6 +38,14 @@ export const CreateSongSchema = z.object({
   genres: z.array(z.string()),
   artists: z.array(z.string())
 })
+export const AddSongToAlbumSchema = z.object({
+  name: z.string().min(3, { message: 'Name must be at least 3 characters long.' }).max(25, {message: "Name must be at least or less than 25 characters" }).trim(),
+  audioUrl: z.string(),
+  albumId: z.string(),
+  duration : z.string(),
+  genres: z.array(z.string()),
+  artists: z.array(z.string())
+})
 export const UpdateSongSchema = z.object({
   id: z.string(),
   name: z.string().min(3, { message: 'Name must be at least 3 characters long.' }).max(25, {message: "Name must be at least or less than 25 characters" }).trim(),
@@ -46,7 +54,8 @@ export const UpdateSongSchema = z.object({
   duration : z.string(),
   releaseDate: z.string(),
   genres: z.array(z.string()),
-  artists: z.array(z.string())
+  artists: z.array(z.string()),
+  albumId: z.string()
 })
 export const CreateAlbumSchema = z.object({
   name: z.string().min(3, { message: 'Name must be at least 3 characters long.' }).max(20, {message: "Name must be at least or less than 20 characters" }).trim(),

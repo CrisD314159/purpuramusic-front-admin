@@ -6,21 +6,12 @@ const nextConfig: NextConfig = {
     remotePatterns:[
       {
         protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-        port: '',
-        pathname: '/**',
-        search: '',
-      },
-      {
-        protocol: 'https',
         hostname: 'res.cloudinary.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '**',
-        pathname: '/**',
+        port: '',
+        pathname: '/dw43hgf5p/**',
+        search: '',
       }
+
       
     ]
   },

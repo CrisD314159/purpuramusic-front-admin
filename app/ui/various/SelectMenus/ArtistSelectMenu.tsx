@@ -1,4 +1,4 @@
-
+'use client'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -19,13 +19,14 @@ interface ArtistMenuProps{
   artist: string[];
   setArtist: (artist: string[]) => void;
   multiple?: boolean;
+  edit?:boolean
 }
 
 export default function ArtistSelectMenu({props}:{props:ArtistMenuProps}) {
   const [input, setInput] = useState('');
-  const {data, error, mutate} = useSWR(input ?`${apiURL}/getMinimalArtists/artist?name=${input}`
+  const {data, error, mutate, isLoading} = useSWR(input ?`${apiURL}/getMinimalArtists/artist?name=${input}`
     :`${apiURL}/getMinimalArtists/artist`, getMinArtists)
-    
+  
 
   const debounce = useDebouncedCallback((input:string)=>{
     setInput(input)
@@ -35,7 +36,6 @@ export default function ArtistSelectMenu({props}:{props:ArtistMenuProps}) {
 
     const handleChange = (value:string|undefined) => {
       if(!value) return
-      console.log(value);
       props.setArtist(
         // On autofill we get a stringified value.
         typeof value === 'string' ? value.split(',') : value,
@@ -44,10 +44,11 @@ export default function ArtistSelectMenu({props}:{props:ArtistMenuProps}) {
 
   const artists = data?.data ?? [{Id:"0", Name:"No artists found"}]
   return (
-    <div style={{width:"70%"}}>
+    <div style={{width:"100%", margin:"20px 0px"}}>
       <Autocomplete
         id="country-select-demo"
         sx={{ width: '100%' }}
+        loading={isLoading}
         multiple={props.multiple}
         options={artists}
         autoHighlight
@@ -92,7 +93,6 @@ export default function ArtistSelectMenu({props}:{props:ArtistMenuProps}) {
           />
         )}
       />
-
 
         {
           error &&  <Snackbar open={true} autoHideDuration={4000}>
